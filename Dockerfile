@@ -1,4 +1,4 @@
-FROM patataman/zoe-agent-insult
+FROM voiser/zoe-agent:v3
 
 WORKDIR /code
 
