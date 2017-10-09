@@ -5,6 +5,7 @@
 #
 
 from zoe import *
+import random
 
 @Agent('Insult')
 class InsultAgent:
@@ -27,28 +28,34 @@ class InsultAgent:
                     ["Mi ultima pelea acabo con mis manos llenas de sangre.",
                     "Espero que ya hayas aprendido a no tocarte la nariz."]]
 
+    def getRandomInsult(self):
+        ins = int(random.uniform(0, len(self.allInsults)))
+        return self.allInsults[ins][0]
+
     #Intent contiene: frase a la que se responde y respuesta
     @Intent('insult.start')
     def start(self, intent):
-        answer = input("¿Quieres enfrentarte a Zoe en duelo de insultos?\n Y/N\n")
-        if answer == "Y":
-            print(allInsults[0][0]+"\n"+"-"*10)
-            generateAnswers()
-        else:
-            print("Gallina")
-
-    def generateAnswer():
-        #while True:
-        #    cosas
-        pass
+        insult = self.getRandomInsult() 
+        return {
+            'data': 'insult',
+            'from': 'insultAgent',
+            'insult': insult
+        }
 
     #Intent contiene: frase a la que se responde y respuesta
     @Intent('insult.answer')
     def answer(self, intent):
-        dest = intent['recipient']['email']
-        # send email...
+        insult = intent['insult']
+        answer = intent['answer']
+        for i in self.allInsults:
+            if answer in i and insult in i:
+                return {
+                    'data': 'insult',
+                    'from': 'insultAgent',
+                    'text': 'D\'oh!'
+                }
         return {
-            'data': 'notification',
-            'from': 'email',
-            'text': 'message sent'
+            'data': 'insult',
+            'from': 'insultAgent',
+            'text': 'No pueds conmigo!'
         }
