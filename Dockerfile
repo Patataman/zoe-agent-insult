@@ -1,4 +1,4 @@
-FROM voiser/zoe-agent:v3
+FROM voiser/zoe-agent:latest
 
 WORKDIR /code
 
